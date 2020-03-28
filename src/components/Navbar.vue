@@ -5,9 +5,11 @@
         <span>M</span>
         <span class="font-weight-light">etereologia</span>
       </v-toolbar-title>
-      <v-spacer></v-spacer> 
+      <v-spacer></v-spacer>
       <CheckMapsBtn /> 
-      <CheckWeatherBtn />
+      <CheckWeatherBtn /> 
+      <LoginBtn /> 
+      <RegisterBtn /> 
      </v-toolbar>
   </nav>
 </template>
@@ -15,10 +17,12 @@
 <script>
 //import DropdownMenu from './DropdownMenu'; 
 import CheckMapsBtn from './CheckMapsBtn'; 
-import CheckWeatherBtn from './CheckWeatherBtn';
+import CheckWeatherBtn from './CheckWeatherBtn'; 
+import LoginBtn from './LoginBtn'; 
+import RegisterBtn from './RegisterBtn';
 
 export default {
-  components: {CheckMapsBtn, CheckWeatherBtn},
+  components: {CheckMapsBtn, CheckWeatherBtn, LoginBtn, RegisterBtn},
   data() {
     return {};
   }, 
