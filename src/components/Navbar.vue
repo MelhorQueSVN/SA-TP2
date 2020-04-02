@@ -5,11 +5,12 @@
         <span>M</span>
         <span class="font-weight-light">etereologia</span>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer></v-spacer> 
       <CheckMapsBtn /> 
       <CheckWeatherBtn /> 
       <LoginBtn /> 
       <RegisterBtn /> 
+      <span class="white--text font-weight-light">{{ this.currentUser }}</span>
      </v-toolbar>
   </nav>
 </template>
@@ -20,14 +21,34 @@ import CheckMapsBtn from './CheckMapsBtn';
 import CheckWeatherBtn from './CheckWeatherBtn'; 
 import LoginBtn from './LoginBtn'; 
 import RegisterBtn from './RegisterBtn';
+import firebase from 'firebase';
 
-export default {
+export default { 
   components: {CheckMapsBtn, CheckWeatherBtn, LoginBtn, RegisterBtn},
   data() {
-    return {};
+    return {
+      isLoggedIn: false, 
+      currentUser: false
+    };
   }, 
   methods:{ 
-  } 
+  },  
+  created() { 
+    console.log("heyyyy")
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      console.log("firebase" + firebase.auth().currentUser.email)
+      this.currentUser = firebase.auth().currentUser.email; 
+    }
+  }, 
+  mounted: function(){ 
+    console.log("heyyyy")
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      console.log("firebase" + firebase.auth().currentUser.email)
+      this.currentUser = firebase.auth().currentUser.email; 
+    }
+  }
 };
 </script>
 

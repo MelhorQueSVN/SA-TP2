@@ -27,7 +27,9 @@
                     label="Login"
                     name="login" 
                     prepend-icon="person"
-                    type="text"
+                    type="text" 
+                    required 
+                    v-model="email"
                   />
 
                   <v-text-field
@@ -35,13 +37,14 @@
                     label="Password"
                     name="password"
                     prepend-icon="lock"
-                    type="password"
+                    type="password" 
+                    v-model="password"
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="blue lighten-3">Login</v-btn>
+                <v-btn v-on:click="login" color="blue lighten-3">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -51,10 +54,32 @@
   </v-app>
 </template>
 
-<script>
+<script> 
+import firebase from 'firebase'
+
   export default {
     props: {
       source: String,
     },
+    data(){ 
+      return{  
+        email: "",  
+        password: ""
+      }
+    }, 
+    methods: { 
+      login: function(e){ 
+        firebase.auth().signInWithEmailAndPassword(this.email,this.password)
+        .then(user => { 
+          alert(`Login feito para ${user.email}`); 
+          this.$router.push('/'); 
+          //this.router.go({path: "/"});
+        }, 
+        err =>{ 
+          alert(err.message);
+        })
+        e.preventDefault();
+      }
+    }
   }
 </script>

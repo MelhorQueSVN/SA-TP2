@@ -9,8 +9,11 @@
             <h2> Mapa das Nuvens </h2> 
             </v-col>     
           </v-row>
-            <!-- o v-bind:label, tive de fazer assim para conseguir traduzir o interior do campo -->
-            <!--  <v-btn @click="reset">clear</v-btn> /-->
+          <v-container class="blue-grey lighten-4">
+           <div>
+            <img src="https://maps.owm.io/map/precipitation_new/0/0/0.png?appid=2aaf6c39c46c00fc3969d144655bf6c2"/>
+           </div>
+          </v-container>
         </v-form>
       </v-container>
     </div>
@@ -25,15 +28,16 @@ export default {
   name: 'Home',
   data() { 
     return { 
-       info: null 
+       info: null , 
+       VANE_KEY: "2aaf6c39c46c00fc3969d144655bf6c2"
     }
   }, 
   mounted: function() {
     // o url da chamada tem de ter sempre aquele formato http://... e sempre!! com appid
     axios 
-      .get("https://tile.openweathermap.org/map/clouds_new/0/0/0.png?appid=2aaf6c39c46c00fc3969d144655bf6c2")
+      .get("https://tile.openweathermap.org/map/clouds_new/0/0/0.png?basemap=map&appid=2aaf6c39c46c00fc3969d144655bf6c2")
       .then(dados => { 
-        console.log(dados) 
+        console.log(dados.data) 
         this.info = dados.data
       })
       .catch(err => {

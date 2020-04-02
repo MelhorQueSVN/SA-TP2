@@ -27,7 +27,8 @@
                     label="Email"
                     name="login" 
                     prepend-icon="email"
-                    type="text"
+                    type="text" 
+                    v-model="email"
                   />
 
                   <v-text-field
@@ -35,20 +36,14 @@
                     label="Password"
                     name="password"
                     prepend-icon="lock"
-                    type="password"
+                    type="password" 
+                    v-model="password"
                   /> 
-                  <v-text-field
-                    id="password-again"
-                    label="Password"
-                    name="password"
-                    prepend-icon="lock"
-                    type="password"
-                  />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="blue lighten-3">Registar</v-btn>
+                <v-btn v-on:click="register" color="blue lighten-3">Registar</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -58,10 +53,35 @@
   </v-app>
 </template>
 
-<script>
+<script> 
+import firebase from 'firebase';
+
   export default {
     props: {
       source: String,
-    },
+    }, 
+    data(){ 
+      return{  
+        email: "",  
+        password: "",
+      }
+    }, 
+    methods: { 
+      register: function(e){ 
+        console.log(this.password)
+        firebase.auth().createUserWithEmailAndPassword(this.email,this.password)
+        .then(user => { 
+          alert(`Account criada para ${user.email}`); 
+          //this.$router.go({ path: this.$router.path });
+          this.$router.push('/Login') 
+          //this.$router.go({path: "/Login" });
+        }, 
+        err =>{ 
+          alert(err.message);
+        })
+        e.preventDefault();
+      }
+    }
+
   }
 </script>

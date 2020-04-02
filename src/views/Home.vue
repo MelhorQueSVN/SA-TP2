@@ -57,57 +57,8 @@ export default {
        API_UV : "http://api.openweathermap.org/data/2.5/uvi?", 
        API_PREV: "http://api.openweathermap.org/data/2.5/forecast?units=metric"
     }
-  }, 
-  //mounted: function() {
-    // o url da chamada tem de ter sempre aquele formato http://... e sempre!! com appid
-    /*
-    axios
-      .get("http://api.openweathermap.org/data/2.5/weather?q=London,uk&units=metric&APPID=2aaf6c39c46c00fc3969d144655bf6c2")
-      .then(dados => { 
-        console.log(dados)  
-        this.info = dados.data  
-        this.icon =  './assets/' + this.info.weather[0].icon.slice(0, 3) + '.png' 
-        console.log("Imagem " + this.icon)   
-        // transformar em data normal de UNIX
-        this.sunrise = new Date(this.info.sys.sunrise*1000).toLocaleTimeString("en-GB").slice(0,5);
-        this.sunset = new Date(this.info.sys.sunset*1000).toLocaleTimeString("en-GB").slice(0,5);
-      })
-      .catch(err => {
-        this.error = err.message;
-      });
-      
-    axios 
-      .get("http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&APPID=2aaf6c39c46c00fc3969d144655bf6c2") 
-      .then(response =>{ 
-        console.log("dados recebidos " + response) 
-        this.prev = response.data   
-        console.log(this.prev) 
-        // Previsão da api para temperatura dos próximos 5 dias
-        this.primeiraPrev = this.prev.list[0].main.temp  
-        console.log(this.primeiraPrev)
-        this.segundaPrev = this.prev.list[1].main.temp
-        console.log(this.segundaPrev) 
-        this.terceiraPrev = this.prev.list[2].main.temp 
-        console.log(this.terceiraPrev)
-        this.quartaPrev = this.prev.list[3].main.temp 
-        console.log(this.quartaPrev)
-        this.quintaPrev = this.prev.list[4].main.temp 
-      }) 
-      .catch(err =>{ 
-        this.error = err.message
-      });
-    axios 
-      .get("http://api.openweathermap.org/data/2.5/uvi?appid=2aaf6c39c46c00fc3969d144655bf6c2&lat=51.5&lon=-0.11")
-      .then(responseUV =>{ 
-        this.uv = responseUV.data
-        this.raioUv = this.uv.value
-        }) 
-        .catch(err =>{ 
-          this.error = err.message
-        });
-    */
- //}, 
-  methods:{ 
+ }, 
+ methods:{ 
     getWeather(url) {
       axios
         .get(url)
