@@ -10,7 +10,7 @@
       <CheckWeatherBtn /> 
       <LoginBtn /> 
       <RegisterBtn /> 
-      <span class="white--text font-weight-light">{{ this.currentUser }}</span>
+      <!--<span class="white--text font-weight-light">{{ this.currentUser }}</span>-->
      </v-toolbar>
   </nav>
 </template>
@@ -34,14 +34,6 @@ export default {
   methods:{ 
   },  
   created() { 
-    console.log("heyyyy")
-    if (firebase.auth().currentUser) {
-      this.isLoggedIn = true;
-      console.log("firebase" + firebase.auth().currentUser.email)
-      this.currentUser = firebase.auth().currentUser.email; 
-    }
-  }, 
-  mounted: function(){ 
     console.log("heyyyy")
     if (firebase.auth().currentUser) {
       this.isLoggedIn = true;
