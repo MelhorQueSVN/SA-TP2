@@ -70,10 +70,11 @@ import firebase from 'firebase';
       register: function(e){ 
         console.log(this.password)
         firebase.auth().createUserWithEmailAndPassword(this.email,this.password)
-        .then(user => { 
-          alert(`Account criada para ${user.email}`); 
+        .then(user => {  
+          console.log(user.email)
+          alert("Registo feito para " + this.email); 
           //this.$router.go({ path: this.$router.path });
-          this.$router.push('/Login') 
+          this.$router.go({ path: this.$router.path });
           //this.$router.go({path: "/Login" });
         }, 
         err =>{ 

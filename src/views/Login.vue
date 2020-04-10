@@ -71,8 +71,9 @@ import firebase from 'firebase'
       login: function(e){ 
         firebase.auth().signInWithEmailAndPassword(this.email,this.password)
         .then(user => { 
-          alert(`Login feito para ${user.email}`); 
-          this.$router.push('/'); 
+          console.log(user.email)
+          alert("Login feito para " + this.email); 
+          this.$router.go({ path: this.$router.path }); 
           //this.router.go({path: "/"});
         }, 
         err =>{ 

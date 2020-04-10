@@ -22,9 +22,15 @@ const firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
-  
-new Vue({
-  router,
-  vuetify, 
-  render: h => h(App)
-}).$mount('#app')
+
+let app; 
+firebase.auth().onAuthStateChanged(user =>{ 
+  if(!app){ 
+    console.log(user)
+    app = new Vue({
+      router,
+      vuetify, 
+      render: h => h(App)
+    }).$mount('#app')    
+  }
+});

@@ -14,11 +14,8 @@ export default {
   }, 
   methods: { 
       goTempo(){ 
-           this.$router.push({
-            name: 'home',  
-        });
+        this.$router.go({ path: this.$router.path });  
       }
   }
-
 };
 </script>
