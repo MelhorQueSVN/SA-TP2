@@ -1,33 +1,114 @@
-<template>
-<v-container>
-    <v-row>
-      <v-col col="12">
-  <div class="weather"></div>
-    <h1 class="font-weight-light text-center"> Metereologia para <span class="font-weight-light"> {{ this.nome_loc }} </span></h1>  
-  <v-card text class ="pa-2 text-center"> 
-    <div> 
-     <!-- <h3 class="font-weight-light"> Temperatura : {{ this.info.main.temp }} Cº <img :src="require('../assets/01d.png')" height="30" /> </h3>  -->
-      <h3 class="font-weight-light"> Temperatura : {{ this.info.main.temp }} Cº </h3>
-      <h3 class="font-weight-light"> Temperatura mínima : {{ this.info.main.temp_min }} Cº</h3> 
-      <h3 class="font-weight-light"> Temperatura máxima : {{ this.info.main.temp_max }} Cº</h3> 
-      <h3 class="font-weight-light"> Humidade : {{ this.info.main.humidity }} %</h3> 
-      <h3 class="font-weight-light"> Pressão Atmoesférica : {{ this.info.main.pressure }} Pa</h3> 
-      <h3 class="font-weight-light"> Nascer do sol : {{ this.sunrise }} horas </h3> 
-      <h3 class="font-weight-light"> Por do sol : {{ this.sunset }} horas </h3>  
-      <h3 class="font-weight-light"> UV : {{ this.raioUv }} </h3>  
-      
-    </div>  
-  </v-card> 
-  <div class="previsao"></div> 
-    <h1 class="font-weight-light text-center"> Previsão próximos 5 dias </h1>
-  <v-card text class = "pa-2 text-center"> 
-    <div> 
-      <h3 class="font-weight-light"> {{ this.primeiraPrev }} Cº {{ this.segundaPrev }} Cº {{ this.terceiraPrev }} Cº {{ this.quartaPrev }} Cº {{ this.quintaPrev }} Cº </h3>
-    </div>
-  </v-card>
+<template>  
+<v-container fill-height fluid>
+  <v-row align="center"
+      justify="center">
+  <v-card
+      class="mx-auto"
+      max-width="800" 
+      width="600"
+  >
+    <v-list-item three-line>
+      <v-list-item-content>
+        <v-list-item-title class="headline">{{ this.nome_loc }}</v-list-item-title>
+        <v-list-item-subtitle>{{ this.dayOfWeek }}, {{this.hora}}:{{this.minutos}}, {{this.info.weather[0].description}}</v-list-item-subtitle>
+        <v-list-item-subtitle>Nascer do sol {{this.sunrise}}, por do sol {{this.sunset}} </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
 
-      </v-col>
-    </v-row> 
+    <v-card-text>
+      <v-row align="center">
+        <v-col class="display-3" cols="6">
+          {{this.info.main.temp}}&deg;C
+        </v-col>
+        <v-col cols="6">
+          <v-img
+            :src="require(`../assets/${this.icon}.png`)"
+            alt=""
+            width="92"
+          ></v-img>
+        </v-col>
+      </v-row> 
+
+      <v-row align="center">
+        <v-col class="display-1" cols="6">
+          {{this.info.main.temp_min}}/{{this.info.main.temp_max}}&deg;C
+        </v-col>
+      </v-row> 
+
+    </v-card-text>
+
+    <v-list-item>
+      <v-list-item-icon>
+        <v-icon>mdi-send</v-icon>
+      </v-list-item-icon>
+      <v-list-item-subtitle>{{this.info.wind.speed}} Km/h</v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+      <v-list-item-icon>
+        <v-icon>mdi-cloud-download</v-icon>
+      </v-list-item-icon>
+      <v-list-item-subtitle>{{this.info.clouds.all}} %</v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+      <v-list-item-icon>
+        <v-icon>mdi-water-percent</v-icon>
+      </v-list-item-icon>
+      <v-list-item-subtitle>{{this.info.main.humidity}} %</v-list-item-subtitle>
+    </v-list-item> 
+
+    <v-list-item>
+      <v-list-item-icon>
+        <v-icon>mdi-shield-sun</v-icon>
+      </v-list-item-icon>
+      <v-list-item-subtitle>{{this.raioUv}} </v-list-item-subtitle>
+    </v-list-item>
+    
+    <v-divider></v-divider>
+
+    <v-list-item>
+        <v-list-item-title>{{ this.prim }}:</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ this.primeiraPrev }}&deg;C 
+        </v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+        <v-list-item-title>{{ this.seg }}:</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ this.segundaPrev }}&deg;C 
+        </v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+        <v-list-item-title>{{ this.ter }}:</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ this.terceiraPrev }}&deg;C 
+        </v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+        <v-list-item-title>{{ this.quart }}:</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ this.quartaPrev }}&deg;C 
+        </v-list-item-subtitle>
+    </v-list-item>
+
+    <v-list-item>
+        <v-list-item-title>{{ this.quint }}:</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ this.quintaPrev }}&deg;C 
+        </v-list-item-subtitle>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
+    <v-card-actions>
+      <v-btn text>Reportagem do tempo</v-btn>
+    </v-card-actions>
+  </v-card>
+  </v-row>
 </v-container>
 </template>
 
@@ -41,8 +122,8 @@ export default {
     return { 
        info: null, 
        prev: null,  
-       uv : null,
-       icon : null ,
+       uv : null, 
+       icon : null,
        sunset : null, 
        sunrise : null, 
        primeiraPrev : "", 
@@ -51,7 +132,15 @@ export default {
        quartaPrev : "", 
        quintaPrev : "", 
        raioUv: "",  
-       nome_loc : "",
+       dayOfWeek: "",
+       nome_loc : "", 
+       hora: "", 
+       minutos: "",
+       prim: "", 
+       seg: "", 
+       ter: "", 
+       quart: "",
+       quint: "", 
        API : "http://api.openweathermap.org/data/2.5/weather?units=metric", 
        KEY : "&APPID=2aaf6c39c46c00fc3969d144655bf6c2",  
        API_UV : "http://api.openweathermap.org/data/2.5/uvi?", 
@@ -66,7 +155,9 @@ export default {
           this.info = response.data
           this.sunrise = new Date(response.data.sys.sunrise*1000).toLocaleTimeString("en-GB").slice(0,5);
           this.sunset = new Date(response.data.sys.sunset*1000).toLocaleTimeString("en-GB").slice(0,5); 
-          this.nome_loc = this.info.name
+          this.nome_loc = this.info.name 
+          this.icon = this.info.weather[0].icon 
+          console.log(this.icon)  
       })
       .catch(error => {
         console.log(error);
@@ -93,14 +184,60 @@ export default {
         this.prev = response.data   
         // Previsão da api para temperatura dos próximos 5 dias
         this.primeiraPrev = this.prev.list[0].main.temp  
-        console.log(this.primeiraPrev)
         this.segundaPrev = this.prev.list[1].main.temp
-        console.log(this.segundaPrev) 
         this.terceiraPrev = this.prev.list[2].main.temp 
-        console.log(this.terceiraPrev)
         this.quartaPrev = this.prev.list[3].main.temp 
-        console.log(this.quartaPrev)
         this.quintaPrev = this.prev.list[4].main.temp 
+        if (this.dayOfWeek == "Segunda"){ 
+          this.prim = "Terça" 
+          this.seg = "Quarta" 
+          this.ter = "Quinta" 
+          this.quart = "Sexta" 
+          this.quint = "Sábado"
+ 
+        } else if (this.dayOfWeek == "Terça"){
+          this.prim = "Quarta" 
+          this.seg = "Quinta" 
+          this.ter = "Sexta" 
+          this.quart = "Sábado" 
+          this.quint = "Domingo"
+
+        } else if (this.dayOfWeek == "Quarta"){ 
+          this.prim = "Quinta" 
+          this.seg = "Sexta" 
+          this.ter = "Sábado" 
+          this.quart = "Domingo" 
+          this.quint = "Segunda"
+
+        } else if (this.dayOfWeek == "Quinta"){ 
+          this.prim = "Sexta" 
+          this.seg = "Sábado" 
+          this.ter = "Domingo" 
+          this.quart = "Segunda" 
+          this.quint = "Terça"
+
+        } else if (this.dayOfWeek == "Sexta"){ 
+          this.prim = "Sábado" 
+          this.seg = "Domingo" 
+          this.ter = "Terça" 
+          this.quart = "Quarta" 
+          this.quint = "Quinta"
+
+        } else if (this.dayOfWeek == "Sábado"){ 
+          this.prim = "Domingo" 
+          this.seg = "Segunda" 
+          this.ter = "Terça" 
+          this.quart = "Quarta" 
+          this.quint = "Quinta"
+
+        } else { 
+          this.prim = "Segunda" 
+          this.seg = "Terça" 
+          this.ter = "Quarta" 
+          this.quart = "Quinta" 
+          this.quint = "Sexta"
+        }
+      
       }) 
       .catch(err =>{ 
         this.error = err.message
@@ -119,9 +256,10 @@ export default {
    
     buildUrl(position) {
       const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+      const lon = position.coords.longitude; 
+      const lan_c = "pt"
   
-      this.getWeather(this.API + '&lat=' + lat + '&lon=' + lon + this.KEY);
+      this.getWeather(this.API + '&lat=' + lat + '&lon=' + lon + this.KEY + '&lang=' + lan_c);
     }, 
     
     buildUrlUV(position) {
@@ -136,12 +274,45 @@ export default {
       const lon = position.coords.longitude;
   
       this.getPrev(this.API_PREV + '&lat=' + lat + '&lon=' + lon + this.KEY);
-    }   
+    }
   },
   beforeMount() {
     this.geolocation(); 
     this.geoLocation2(); 
-    this.geoLocation3();
+    this.geoLocation3();  
+    // vai buscar o dia da semana
+    var d = new Date();
+    var n = d.getDay(); 
+    // vai buscar a hora
+    var dataH = new Date(); 
+    this.hora = dataH.getHours(); 
+    // vai buscar os minutos 
+    this.minutos = dataH.getMinutes();
+    if (n == 0){ 
+      this.dayOfWeek = "Domingo" 
+    } 
+    if (n == 1){ 
+      this.dayOfWeek = "Segunda" 
+    }
+    if (n == 2){ 
+      this.dayOfWeek = "Terça"
+     
+    } 
+    if (n == 3){ 
+      this.dayOfWeek = "Quarta"
+    } 
+    if (n == 4){ 
+      this.dayOfWeek = "Quinta"
+    
+    } 
+    if (n == 5){ 
+      this.dayOfWeek = "Sexta" 
+
+    }
+    if (n == 6){
+      this.dayOfWeek = "Sábado"
+
+    }
   }
 }
 </script>

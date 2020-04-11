@@ -1,7 +1,8 @@
 <template>
-  <v-parallax
+ <v-parallax
+    class="ma-0 pa-0"
     dark 
-    height="630" 
+    height="660" 
     src="../assets/background-clouds2.jpg"
   >
     <v-row
@@ -21,7 +22,7 @@
         <h5 class="display-0 font-weight-thin mb-4 subheading">Rui Miguel</h5> 
      </v-col>  
     </v-row>
-  </v-parallax> 
+  </v-parallax>
 </template>  
 
 
@@ -33,7 +34,5 @@ export default {
 </script> 
 
 <style>
-  .v-parallax__content {
-    padding: 0px !important;
-  }
+
 </style>
