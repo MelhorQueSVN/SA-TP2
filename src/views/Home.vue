@@ -24,7 +24,7 @@
           <v-img
             :src="require(`../assets/${this.icon}.png`)"
             alt=""
-            width="92"
+            width="120"
           ></v-img>
         </v-col>
       </v-row> 
@@ -71,14 +71,20 @@
         <v-list-item-title>{{ this.prim }}:</v-list-item-title>
         <v-list-item-subtitle>
           {{ this.primeiraPrev }}&deg;C 
-        </v-list-item-subtitle>
+        </v-list-item-subtitle> 
+        <v-list-item-avatar>
+          <v-img :src="require(`../assets/${this.primeiroIcon}.png`)"></v-img>
+        </v-list-item-avatar>
     </v-list-item>
 
     <v-list-item>
         <v-list-item-title>{{ this.seg }}:</v-list-item-title>
         <v-list-item-subtitle>
           {{ this.segundaPrev }}&deg;C 
-        </v-list-item-subtitle>
+        </v-list-item-subtitle> 
+        <v-list-item-avatar>
+          <v-img :src="require(`../assets/${this.segundoIcon}.png`)"></v-img>
+        </v-list-item-avatar>
     </v-list-item>
 
     <v-list-item>
@@ -86,6 +92,9 @@
         <v-list-item-subtitle>
           {{ this.terceiraPrev }}&deg;C 
         </v-list-item-subtitle>
+        <v-list-item-avatar>
+          <v-img :src="require(`../assets/${this.terceiroIcon}.png`)"></v-img>
+        </v-list-item-avatar>
     </v-list-item>
 
     <v-list-item>
@@ -93,6 +102,9 @@
         <v-list-item-subtitle>
           {{ this.quartaPrev }}&deg;C 
         </v-list-item-subtitle>
+        <v-list-item-avatar>
+          <v-img :src="require(`../assets/${this.quartoIcon}.png`)"></v-img>
+        </v-list-item-avatar>
     </v-list-item>
 
     <v-list-item>
@@ -100,6 +112,9 @@
         <v-list-item-subtitle>
           {{ this.quintaPrev }}&deg;C 
         </v-list-item-subtitle>
+        <v-list-item-avatar>
+          <v-img :src="require(`../assets/${this.quintoIcon}.png`)"></v-img>
+        </v-list-item-avatar>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -140,7 +155,14 @@ export default {
        seg: "", 
        ter: "", 
        quart: "",
-       quint: "", 
+       quint: "",  
+       prevMeiodia: [], 
+       prevIcons: [], 
+       primeiroIcon: "", 
+       segundoIcon: "", 
+       terceiroIcon: "",
+       quartoIcon: "",
+       quintoIcon: "",
        API : "http://api.openweathermap.org/data/2.5/weather?units=metric", 
        KEY : "&APPID=2aaf6c39c46c00fc3969d144655bf6c2",  
        API_UV : "http://api.openweathermap.org/data/2.5/uvi?", 
@@ -183,11 +205,36 @@ export default {
         .then(response=>{ 
         this.prev = response.data   
         // Previsão da api para temperatura dos próximos 5 dias
+        var i; 
+        var date = "";
+        // percorrer a lista de previsões (queremos tirar a temperatura dos proximos 5 dias ao meio dia e o icon do tempo)
+        for(i=0;i<this.prev.list.length;i++){ 
+            date = this.prev.list[i].dt_txt.substring(11); 
+            // agora já temos data no indície i queremos tirar todas com meio dia, tirando a temperatura e o icon
+            if (date == "12:00:00"){ 
+              this.prevMeiodia.push(this.prev.list[i].main.temp) 
+              this.prevIcons.push(this.prev.list[i].weather[0].icon)
+            }
+        } 
+        // percorrer a lista anterior de previsões e guardar cada previsão 
+        this.primeiraPrev = this.prevMeiodia[0];  
+        this.segundaPrev = this.prevMeiodia[1]; 
+        this.terceiraPrev = this.prevMeiodia[2]; 
+        this.quartaPrev = this.prevMeiodia[3]; 
+        this.quintaPrev = this.prevMeiodia[4];  
+        // percorrer a lista dos icons e guardar cada icon para carregar depois
+        this.primeiroIcon = this.prevIcons[0]; 
+        this.segundoIcon = this.prevIcons[1]; 
+        this.terceiroIcon = this.prevIcons[2]; 
+        this.quartoIcon = this.prevIcons[3]; 
+        this.quintoIcon = this.prevIcons[4]; 
+        /*
         this.primeiraPrev = this.prev.list[0].main.temp  
         this.segundaPrev = this.prev.list[1].main.temp
         this.terceiraPrev = this.prev.list[2].main.temp 
         this.quartaPrev = this.prev.list[3].main.temp 
         this.quintaPrev = this.prev.list[4].main.temp 
+        */
         if (this.dayOfWeek == "Segunda"){ 
           this.prim = "Terça" 
           this.seg = "Quarta" 

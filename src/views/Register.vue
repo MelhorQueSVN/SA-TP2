@@ -39,6 +39,16 @@
                     type="password" 
                     v-model="password"
                   /> 
+
+                  <v-text-field
+                    id="confirmPassword"
+                    label="Confirmar Password"
+                    name="confirmPassword"
+                    prepend-icon="lock"
+                    type="password" 
+                    v-model="confirmPassword" 
+                    :rules="[comparePasswords]"
+                  /> 
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -64,8 +74,14 @@ import firebase from 'firebase';
       return{  
         email: "",  
         password: "",
+        confirmPassword: ""
       }
-    }, 
+    },  
+    computed: { 
+      comparePasswords () { 
+        return this.password !== this.confirmPassword ? 'Passwords não são iguais!' : true
+      }
+    },
     methods: { 
       register: function(e){ 
         console.log(this.password)
