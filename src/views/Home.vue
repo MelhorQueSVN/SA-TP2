@@ -338,6 +338,9 @@ export default {
     if (n == 6) {
       this.dayOfWeek = "Sábado";
     }
+    this.getWeather();
+    this.getUV();
+    this.getPrev();
   }
 };
 </script>
