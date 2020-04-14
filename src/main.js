@@ -3,12 +3,18 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify';
 import 'material-design-icons-iconfont/dist/material-design-icons.css' 
-import * as firebase from "firebase"; 
+//import * as firebase from "firebase"; 
+import { firestorePlugin } from 'vuefire'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import http from 'http'
+
+Vue.prototype.$http = http
 
 Vue.config.productionTip = false
 
-
-// Your web app's Firebase configuration
+Vue.use(firestorePlugin)
+// Your web app's Firebase configuration 
 const firebaseConfig = {
     apiKey: "AIzaSyATZrg6WI1ECjqx4U_TbzLE25ZWw89L0Dg",
     authDomain: "weather-forecast-f20cb.firebaseapp.com",
@@ -19,11 +25,12 @@ const firebaseConfig = {
     appId: "1:60432769540:web:5106fdab1b7c9f3781cb51",
     measurementId: "G-E1QB14D2E6"
   };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
 
-let app; 
+// Initialize Firebase
+let fire = firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
+let app;
 firebase.auth().onAuthStateChanged(user =>{ 
   if(!app){ 
     console.log(user)
@@ -34,3 +41,5 @@ firebase.auth().onAuthStateChanged(user =>{
     }).$mount('#app')    
   }
 });
+
+export const db = fire.database()

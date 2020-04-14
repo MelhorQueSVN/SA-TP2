@@ -30,7 +30,15 @@
                     type="text" 
                     v-model="email"
                   />
-
+                  
+                  <v-text-field
+                    label="Distrito"
+                    name="distrito" 
+                    prepend-icon="mdi-map-marker"
+                    type="text" 
+                    v-model="distrito"
+                  />
+                  
                   <v-text-field
                     id="password"
                     label="Password"
@@ -64,9 +72,10 @@
 </template>
 
 <script> 
-import firebase from 'firebase';
+import firebase from 'firebase'; 
+//import {db} from '../main';
 
-  export default {
+export default {
     props: {
       source: String,
     }, 
@@ -74,7 +83,8 @@ import firebase from 'firebase';
       return{  
         email: "",  
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        distrito: ""
       }
     },  
     computed: { 
@@ -87,8 +97,13 @@ import firebase from 'firebase';
         console.log(this.password)
         firebase.auth().createUserWithEmailAndPassword(this.email,this.password)
         .then(user => {  
-          console.log(user.email)
-          alert("Registo feito para " + this.email); 
+          //const databaseRef = firebase.database(); 
+          this.$http.post('https://weather-forecast-f20cb.firebaseio.com/distritos.json',{ 
+            distrito : this.distrito, 
+            email : this.email
+          }).then(data => console.log(data))
+          
+          alert("Registo feito para " + user.user.email + "  " + this.distrito); 
           //this.$router.go({ path: this.$router.path });
           this.$router.go({ path: this.$router.path });
           //this.$router.go({path: "/Login" });

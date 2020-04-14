@@ -47,10 +47,8 @@ export default {
     };
   }, 
   created() { 
-    console.log("heyyyy")
     if (firebase.auth().currentUser) {
       this.isLoggedIn = true;
-      console.log(this.isLoggedIn)
       console.log("firebase" + firebase.auth().currentUser.email)
       this.currentUser = firebase.auth().currentUser.email; 
     }
