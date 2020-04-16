@@ -24,11 +24,14 @@
       <div v-if="!isLoggedIn">
         <RegisterBtn />  
       </div> 
+      <div v-if="isLoggedIn"> 
+        <Help />
+      </div>
       <div v-if="isLoggedIn">
        <v-btn depressed text class="white--text" @click="logout()">
          <span>Logout</span>
        </v-btn>
-      </div>
+      </div> 
       <!--<span class="white--text font-weight-light">{{ this.currentUser }}</span>-->
      </v-toolbar>
   </nav>
@@ -40,10 +43,11 @@ import CheckWeatherBtn from './CheckWeatherBtn';
 import LoginBtn from './LoginBtn'; 
 import RegisterBtn from './RegisterBtn';
 import MapBtn from './MapBtn';
-import firebase from 'firebase';
+import firebase from 'firebase'; 
+import Help from './Help';
 
 export default { 
-  components: {CheckWeatherBtn, LoginBtn, RegisterBtn, MapBtn},
+  components: {CheckWeatherBtn, LoginBtn, RegisterBtn, MapBtn, Help},
   data() {
     return {
       isLoggedIn: false, 
