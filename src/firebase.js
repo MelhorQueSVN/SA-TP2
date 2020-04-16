@@ -15,4 +15,5 @@ const fire = initializeApp({
 
 export const db = fire.database();
 
-export const distRef = db.ref('distritos')
+export const distRef = db.ref('distritos') 
+export const prevRef = db.ref('previsao')

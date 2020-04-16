@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
-        <v-btn depressed text class="white--text" @click="goTempo()">
-          <span>Ver Tempo</span>
+        <v-btn depressed text class="white--text" @click="goMaps()">
+          <span>Ver mapa UV</span>
         </v-btn>
      </div>
 </template>
@@ -13,11 +13,11 @@ export default {
     };
   }, 
   methods: { 
-      goTempo(){ 
+      goMaps(){ 
         this.$router.push({
-            name: 'home',  
-        });
-      }
+            name: 'mapa'  
+        }); 
+    }
   }
 };
 </script>

@@ -6,8 +6,7 @@
           <v-list-item-content>
             <v-list-item-title class="headline">{{ this.nome_loc }}</v-list-item-title>
             <v-list-item-subtitle>{{ this.dayOfWeek }}, {{this.hora}}:{{this.minutos}}, {{this.info.weather[0].description}}</v-list-item-subtitle>
-            <v-list-item-subtitle>Nascer do sol {{this.sunrise}}</v-list-item-subtitle>
-            <v-list-item-subtitle>Pôr do sol {{this.sunset}}</v-list-item-subtitle>
+            <v-list-item-subtitle> <v-icon>mdi-weather-sunset-up</v-icon> Nascer do sol {{this.sunrise}}, <v-icon>mdi-weather-sunset-down</v-icon> Pôr do sol {{ this.sunset }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 

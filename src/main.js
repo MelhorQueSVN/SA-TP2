@@ -9,10 +9,10 @@ import {
 } from 'vuefire'
 
 import './firebase'
+import VueGoogleCharts from 'vue-google-charts' 
 
-
-//Vue.config.productionTip = false
-
+Vue.config.productionTip = false
+Vue.use(VueGoogleCharts)
 Vue.use(firestorePlugin)
 
 firebase.analytics();

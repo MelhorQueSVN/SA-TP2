@@ -10,6 +10,9 @@
       <div v-if="isLoggedIn">
         <CheckWeatherBtn /> 
       </div> 
+      <div v-if="isLoggedIn"> 
+        <MapBtn /> 
+      </div> 
       <div v-if="!isLoggedIn">
        <v-btn depressed text class="white--text" @click="home()">
          <span>Home</span>
@@ -36,10 +39,11 @@
 import CheckWeatherBtn from './CheckWeatherBtn'; 
 import LoginBtn from './LoginBtn'; 
 import RegisterBtn from './RegisterBtn';
+import MapBtn from './MapBtn';
 import firebase from 'firebase';
 
 export default { 
-  components: {CheckWeatherBtn, LoginBtn, RegisterBtn},
+  components: {CheckWeatherBtn, LoginBtn, RegisterBtn, MapBtn},
   data() {
     return {
       isLoggedIn: false, 

@@ -4,7 +4,8 @@ import Login from '../views/Login.vue';
 import Register from '../views/Register.vue' 
 import Landing from '../views/Landing.vue'
 import Home from '../views/Home.vue'; 
-import firebase from 'firebase';
+import firebase from 'firebase'; 
+import Mapa from '../views/Mapa.vue'
 
 Vue.use(Router);
 
@@ -42,6 +43,14 @@ let router = new Router({
       component: Landing, 
       meta: { 
         requiresGuest: true
+      } 
+    }, 
+    { 
+      path: '/Mapa', 
+      name: 'mapa', 
+      component: Mapa, 
+      meta: {
+        requiresAuth: true
       } 
     }
   ]
