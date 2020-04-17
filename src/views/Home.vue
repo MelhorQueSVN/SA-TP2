@@ -108,7 +108,9 @@
 
 <script>
 // @ is an alias to /src
-import axios from "axios";
+import axios from "axios"; 
+import firebase from 'firebase';
+import { distRef } from "../firebase";
 
 export default {
   name: "Home",
@@ -120,6 +122,8 @@ export default {
       icon: null,
       sunset: null,
       sunrise: null,
+      currUser: "",
+      coordenadasDistrito:[],
       primeiraPrev: "",
       segundaPrev: "",
       terceiraPrev: "",
@@ -135,8 +139,6 @@ export default {
       ter: "",
       quart: "",
       quint: "",
-      prevMeiodia: [],
-      prevIcons: [],
       primeiroIcon: "",
       segundoIcon: "",
       terceiroIcon: "",
@@ -149,6 +151,7 @@ export default {
     };
   },
   methods: {
+    
     getWeather(url) {
       axios
         .get(url)
@@ -162,7 +165,6 @@ export default {
             .slice(0, 5);
           this.nome_loc = this.info.name;
           this.icon = this.info.weather[0].icon;
-          console.log(this.icon);
         })
         .catch(error => {
           console.log(error);
@@ -174,7 +176,6 @@ export default {
         .get(url)
         .then(responseUV => {
           this.uv = responseUV.data;
-          console.log(responseUV);
           this.raioUv = this.uv.value;
         })
         .catch(err => {
@@ -190,34 +191,30 @@ export default {
           // Previsão da api para temperatura dos próximos 5 dias
           var i;
           var date = "";
+          var prevMeiodia = []; 
+          var prevIcons = [];
           // percorrer a lista de previsões (queremos tirar a temperatura dos proximos 5 dias ao meio dia e o icon do tempo)
           for (i = 0; i < this.prev.list.length; i++) {
             date = this.prev.list[i].dt_txt.substring(11);
             // agora já temos data no indície i queremos tirar todas com meio dia, tirando a temperatura e o icon
             if (date == "12:00:00") {
-              this.prevMeiodia.push(this.prev.list[i].main.temp);
-              this.prevIcons.push(this.prev.list[i].weather[0].icon);
+              prevMeiodia.push(this.prev.list[i].main.temp);
+              prevIcons.push(this.prev.list[i].weather[0].icon);
             }
           }
           // percorrer a lista anterior de previsões e guardar cada previsão
-          this.primeiraPrev = this.prevMeiodia[0];
-          this.segundaPrev = this.prevMeiodia[1];
-          this.terceiraPrev = this.prevMeiodia[2];
-          this.quartaPrev = this.prevMeiodia[3];
-          this.quintaPrev = this.prevMeiodia[4];
+          this.primeiraPrev = prevMeiodia[0];
+          this.segundaPrev = prevMeiodia[1];
+          this.terceiraPrev = prevMeiodia[2];
+          this.quartaPrev = prevMeiodia[3];
+          this.quintaPrev = prevMeiodia[4];
           // percorrer a lista dos icons e guardar cada icon para carregar depois
-          this.primeiroIcon = this.prevIcons[0];
-          this.segundoIcon = this.prevIcons[1];
-          this.terceiroIcon = this.prevIcons[2];
-          this.quartoIcon = this.prevIcons[3];
-          this.quintoIcon = this.prevIcons[4];
-          /*
-        this.primeiraPrev = this.prev.list[0].main.temp  
-        this.segundaPrev = this.prev.list[1].main.temp
-        this.terceiraPrev = this.prev.list[2].main.temp 
-        this.quartaPrev = this.prev.list[3].main.temp 
-        this.quintaPrev = this.prev.list[4].main.temp 
-        */
+          this.primeiroIcon = prevIcons[0];
+          this.segundoIcon = prevIcons[1];
+          this.terceiroIcon = prevIcons[2];
+          this.quartoIcon = prevIcons[3];
+          this.quintoIcon = prevIcons[4];
+          
           if (this.dayOfWeek == "Segunda") {
             this.prim = "Terça";
             this.seg = "Quarta";
@@ -268,26 +265,113 @@ export default {
     },
 
     geolocation() {
-      navigator.geolocation.getCurrentPosition(this.buildUrl, this.geoError);
+      navigator.geolocation.getCurrentPosition(this.buildUrl, this.geoError1);
     },
     geoLocation2() {
-      navigator.geolocation.getCurrentPosition(this.buildUrlUV, this.geoError);
+      navigator.geolocation.getCurrentPosition(this.buildUrlUV, this.geoError2);
     },
     geoLocation3() {
-      navigator.geolocation.getCurrentPosition(
-        this.buildUrlPrev,
-        this.geoError
-      );
+      navigator.geolocation.getCurrentPosition(this.buildUrlPrev,this.geoError3);
+    }, 
+    
+    geoError1(){ 
+      var lat = 0; 
+      var lon = 0;
+      const lan_c = "pt";
+      // não deram permissões de localização
+      // ver o distrito a que pertence o utilizador 
+      var currentEmail = this.currUser;
+      var i = 0;
+      var coordenadasD = this.coordenadasDistrito;
+      var distritoUser; 
+
+      distRef.on("value", function(Snapshot) {
+          Snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val(); 
+            if(childData.email == currentEmail){ 
+               distritoUser = childData.distrito;
+               // funciona até aqui crlhhhhhh
+              for(i;i<coordenadasD.length;i++){ 
+                if(coordenadasD[i][0] == distritoUser){ 
+                    lat = coordenadasD[i][1]; 
+                    lon = coordenadasD[i][2]; 
+                 }
+              }
+            }
+         });
+      }) 
+      console.log("entrei2")
+      this.getWeather(this.API + "&lat=" + lat + "&lon=" + lon + this.KEY + "&lang=" + lan_c); 
+  }, 
+
+     geoError2(){ 
+      var lat = 0; 
+      var lon = 0;
+      // não deram permissões de localização
+      // ver o distrito a que pertence o utilizador 
+      var currentEmail = this.currUser;
+      var i = 0;
+      var coordenadasD = this.coordenadasDistrito;
+      var distritoUser; 
+      
+      distRef.on("value", function(Snapshot) {
+          Snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val(); 
+            if(childData.email == currentEmail){ 
+               distritoUser = childData.distrito;
+               // funciona até aqui crlhhhhhh
+              for(i;i<coordenadasD.length;i++){ 
+                if(coordenadasD[i][0] == distritoUser){ 
+                    lat = coordenadasD[i][1]; 
+                    lon = coordenadasD[i][2]; 
+                    console.log(lat); 
+                    console.log(lon);
+                 }
+              }
+            }
+         });
+        }) 
+
+      this.getUV(this.API_UV + this.KEY + "&lat=" + lat + "&lon=" + lon);
     },
 
-    buildUrl(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      const lan_c = "pt";
+     geoError3(){ 
+      var lat = 0; 
+      var lon = 0;
+      // não deram permissões de localização
+      // ver o distrito a que pertence o utilizador 
+      var currentEmail = this.currUser;
+      var i = 0;
+      var coordenadasD = this.coordenadasDistrito;
+      var distritoUser; 
+      
+      distRef.on("value", function(Snapshot) {
+          Snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val(); 
+            if(childData.email == currentEmail){ 
+               distritoUser = childData.distrito;
+               // funciona até aqui crlhhhhhh
+              for(i;i<coordenadasD.length;i++){ 
+                if(coordenadasD[i][0] == distritoUser){ 
+                    lat = coordenadasD[i][1]; 
+                    lon = coordenadasD[i][2]; 
+                    console.log(lat); 
+                    console.log(lon);
+                 }
+              }
+            }
+         });
+        }) 
 
-      this.getWeather(
-        this.API + "&lat=" + lat + "&lon=" + lon + this.KEY + "&lang=" + lan_c
-      );
+      this.getPrev(this.API_PREV + "&lat=" + lat + "&lon=" + lon + this.KEY);
+    },
+
+    buildUrl(position) { 
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude
+      const lan_c = "pt";
+    
+      this.getWeather(this.API + "&lat=" + lat + "&lon=" + lon + this.KEY + "&lang=" + lan_c);
     },
 
     buildUrlUV(position) {
@@ -297,17 +381,26 @@ export default {
       this.getUV(this.API_UV + this.KEY + "&lat=" + lat + "&lon=" + lon);
     },
 
-    buildUrlPrev(position) {
+    buildUrlPrev(position) {   
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
 
       this.getPrev(this.API_PREV + "&lat=" + lat + "&lon=" + lon + this.KEY);
     }
-  },
-  beforeMount() {
+  }, 
+
+  mounted: function(){ 
+    this.currUser = firebase.auth().currentUser.email; 
+    this.coordenadasDistrito = [["Aveiro",40.63,-8.66],["Beja",38.02,-7.95],["Braga",41.54,-8.44],["Bragança",41.81,-6.78],["Castelo Branco",39.81,-7.60],
+      ["Coimbra",40.22,-8.48],["Évora",38.56,-7.94],["Faro",37.01,-7.97],["Distrito da Guarda",40.53,-7.28],["Leiria",39.75,8.84],["Lisboa",38.74,-9.23],
+      ["Portalegre",39.28,-7.46],["Distrito do Porto",41.16,-8.65],["Santarém",39.22,-8.75],["Setúbal",38.52,-8.93],["Viana do Castelo",41.71,-8.84],
+      ["Vila Real",41.30,-7.79],["Viseu",40.66,-7.96]];
     this.geolocation();
     this.geoLocation2();
     this.geoLocation3();
+  },
+
+  beforeMount() {
     // vai buscar o dia da semana
     var d = new Date();
     var n = d.getDay();
@@ -337,9 +430,7 @@ export default {
     if (n == 6) {
       this.dayOfWeek = "Sábado";
     }
-    this.getWeather();
-    this.getUV();
-    this.getPrev();
+
   }
 };
 </script>
