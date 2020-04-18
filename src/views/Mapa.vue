@@ -39,7 +39,7 @@ export default {
   mounted: function() {
     this.chartDataRows = [];
     var info = null;
-    var coiso = [];
+    var res = [];
     prevRef.on("value", function(Snapshot) {
       info = Snapshot.val();
       info = Object.values(info);
@@ -48,13 +48,11 @@ export default {
       var temp = [];
       for (; i < info.length; i++) {
         temp = [info[i].distrito, info[i].UV];
-        coiso.push(temp);
-        console.log(coiso);
+        res.push(temp);
+        console.log(res);
       }
-      //this.chartDataRows = coiso;
-      //console.log(this.chartDataRows);
     });
-    this.chartDataRows = coiso;
+    this.chartDataRows = res;
     this.chartDataRows.unshift(["City", "UV"]);
   }
 };

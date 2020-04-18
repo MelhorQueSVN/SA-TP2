@@ -111,20 +111,12 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(
           user => {
-            //const databaseRef = firebase.database();
-            //this.$http.post('https://weather-forecast-f20cb.firebaseio.com/distritos.json',{
-            //  distrito : this.distrito,
-            //  email : this.email
-            //}).then(data => console.log(data))
-
             distRef.push({ distrito: this.distrito, email: this.email });
 
             alert(
               "Registo feito para " + user.user.email + "  " + this.distrito
             );
-            //this.$router.go({ path: this.$router.path });
             this.$router.go({ path: this.$router.path });
-            //this.$router.go({path: "/Login" });
           },
           err => {
             alert(err.message);

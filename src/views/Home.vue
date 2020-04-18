@@ -122,7 +122,7 @@ export default {
       icon: null,
       sunset: null,
       sunrise: null,
-      currUser: "",
+      currUser: "", 
       coordenadasDistrito:[],
       primeiraPrev: "",
       segundaPrev: "",
@@ -152,6 +152,61 @@ export default {
   },
   methods: {
     
+    async calculaNewCoords(){ 
+      var lat = 0; 
+      var lon = 0;
+      var currentEmail = this.currUser;
+      var i = 0;
+      var coordenadasD = this.coordenadasDistrito;
+      var distritoUser; 
+      var cords = [];
+       distRef.on("value", function(Snapshot) {
+          Snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val(); 
+            if(childData.email == currentEmail){ 
+               distritoUser = childData.distrito;
+              for(i;i<coordenadasD.length;i++){ 
+                if(coordenadasD[i][0] == distritoUser){ 
+                    lat = coordenadasD[i][1]; 
+                    lon = coordenadasD[i][2]; 
+                    console.log(lat); 
+                    console.log(lon);
+                    cords.push(lat) 
+                    cords.push(lon)
+                 }
+              }
+            }
+         });
+        })  
+      return cords;
+    }, 
+
+    async geoError1(){ 
+      const res = await this.calculaNewCoords()
+      const lan_c = "pt" 
+      this.getWeather(this.API + "&lat=" + res[0] + "&lon=" + res[1] + this.KEY + "&lang=" + lan_c); 
+    },  
+
+    async geoError2(){ 
+      /*
+      var res = this.calculaNewCoords();
+      const lan_c = "pt"
+      this.getWeather(this.API + "&lat=" + res[0] + "&lon=" + res[1] + this.KEY + "&lang=" + lan_c); 
+      */
+        const res = await this.calculaNewCoords()
+        this.getUV(this.API_UV + this.KEY + "&lat=" + res[0] + "&lon=" + res[1]); 
+    }, 
+
+    async geoError3(){ 
+      /*
+      var res = this.calculaNewCoords();
+      const lan_c = "pt"
+      this.getWeather(this.API + "&lat=" + res[0] + "&lon=" + res[1] + this.KEY + "&lang=" + lan_c); 
+      */
+      const res = await this.calculaNewCoords()
+       this.getPrev(this.API_PREV + "&lat=" + res[0] + "&lon=" + res[1] + this.KEY);
+    }, 
+
     getWeather(url) {
       axios
         .get(url)
@@ -274,97 +329,17 @@ export default {
       navigator.geolocation.getCurrentPosition(this.buildUrlPrev,this.geoError3);
     }, 
     
-    geoError1(){ 
-      var lat = 0; 
-      var lon = 0;
-      const lan_c = "pt";
-      // não deram permissões de localização
-      // ver o distrito a que pertence o utilizador 
-      var currentEmail = this.currUser;
-      var i = 0;
-      var coordenadasD = this.coordenadasDistrito;
-      var distritoUser; 
-
-      distRef.on("value", function(Snapshot) {
-          Snapshot.forEach(function(childSnapshot) {
-            var childData = childSnapshot.val(); 
-            if(childData.email == currentEmail){ 
-               distritoUser = childData.distrito;
-               // funciona até aqui crlhhhhhh
-              for(i;i<coordenadasD.length;i++){ 
-                if(coordenadasD[i][0] == distritoUser){ 
-                    lat = coordenadasD[i][1]; 
-                    lon = coordenadasD[i][2]; 
-                 }
-              }
-            }
-         });
-      }) 
-      console.log("entrei2")
-      this.getWeather(this.API + "&lat=" + lat + "&lon=" + lon + this.KEY + "&lang=" + lan_c); 
-  }, 
-
+    /*
      geoError2(){ 
-      var lat = 0; 
-      var lon = 0;
-      // não deram permissões de localização
-      // ver o distrito a que pertence o utilizador 
-      var currentEmail = this.currUser;
-      var i = 0;
-      var coordenadasD = this.coordenadasDistrito;
-      var distritoUser; 
-      
-      distRef.on("value", function(Snapshot) {
-          Snapshot.forEach(function(childSnapshot) {
-            var childData = childSnapshot.val(); 
-            if(childData.email == currentEmail){ 
-               distritoUser = childData.distrito;
-               // funciona até aqui crlhhhhhh
-              for(i;i<coordenadasD.length;i++){ 
-                if(coordenadasD[i][0] == distritoUser){ 
-                    lat = coordenadasD[i][1]; 
-                    lon = coordenadasD[i][2]; 
-                    console.log(lat); 
-                    console.log(lon);
-                 }
-              }
-            }
-         });
-        }) 
-
-      this.getUV(this.API_UV + this.KEY + "&lat=" + lat + "&lon=" + lon);
+      var res = this.calculaNewCoords();
+      this.getUV(this.API_UV + this.KEY + "&lat=" + res[0] + "&lon=" + res[1]);
     },
 
      geoError3(){ 
-      var lat = 0; 
-      var lon = 0;
-      // não deram permissões de localização
-      // ver o distrito a que pertence o utilizador 
-      var currentEmail = this.currUser;
-      var i = 0;
-      var coordenadasD = this.coordenadasDistrito;
-      var distritoUser; 
-      
-      distRef.on("value", function(Snapshot) {
-          Snapshot.forEach(function(childSnapshot) {
-            var childData = childSnapshot.val(); 
-            if(childData.email == currentEmail){ 
-               distritoUser = childData.distrito;
-               // funciona até aqui crlhhhhhh
-              for(i;i<coordenadasD.length;i++){ 
-                if(coordenadasD[i][0] == distritoUser){ 
-                    lat = coordenadasD[i][1]; 
-                    lon = coordenadasD[i][2]; 
-                    console.log(lat); 
-                    console.log(lon);
-                 }
-              }
-            }
-         });
-        }) 
-
-      this.getPrev(this.API_PREV + "&lat=" + lat + "&lon=" + lon + this.KEY);
+      var res = this.calculaNewCoords();
+      this.getPrev(this.API_PREV + "&lat=" + res[0] + "&lon=" + res[1] + this.KEY);
     },
+    */
 
     buildUrl(position) { 
       const lat = position.coords.latitude;
