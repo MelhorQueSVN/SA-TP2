@@ -97,10 +97,6 @@
         </v-list-item>
 
         <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-btn text>Reportagem do tempo</v-btn>
-        </v-card-actions>
       </v-card>
     </v-row>
   </v-container>
