@@ -21,7 +21,8 @@ export default {
       updatedChartData: [],
       chartOptions: {
         region: "PT",
-        colorAxis: { colors: ["#00853f", "yellow", "#e31b23"] },
+        colorAxis: { colors: ["#00853f", "yellow", "#e31b23"] }, 
+        sizeAxis: { minValue: 0, maxValue: 11 },
         backgroundColor: "#81d4fa",
         datalessRegionColor: "white",
         defaultColor: "#f5f5f5",
